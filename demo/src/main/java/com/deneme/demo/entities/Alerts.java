@@ -27,7 +27,7 @@ public class Alerts {
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
 	Date updatedDate = createdDate; 
 	boolean alertDirection;
-	boolean deleted;
+	boolean deleted = false;
 	
 	public Long getId() {
 		return id;

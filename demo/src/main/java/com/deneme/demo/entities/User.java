@@ -35,7 +35,7 @@ public class User {
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
 	Date updatedDate = createdDate;
 	
-	boolean deleted;
+	boolean deleted = false;
 
 	public Long getId() {
 		return id;

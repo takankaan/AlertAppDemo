@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.deneme.demo.entities.User;
 import com.deneme.demo.repos.UserRepository;
+import com.deneme.demo.requests.LoginRequest;
 import com.deneme.demo.requests.SoftDeleteRequest;
 
 @Service
@@ -41,5 +42,14 @@ public class UserService {
 		else {
 			return null;
 		}
+	}
+	public User loginUser(LoginRequest loginRequest) {
+		User user = userRepository.findByTcNo(loginRequest.getTcNo());
+		if(user != null)
+		{
+			if(user.getHashPassword().equals(loginRequest.getHashPassword()));
+			return user;
+		}
+		return null;
 	}
 }

@@ -17,7 +17,7 @@ public class Stock {
 	Long id;
 	
 	String stockName;
-	boolean deleted;
+	boolean deleted = false;
 	
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
 	Date createdDate = new Date(System.currentTimeMillis());
