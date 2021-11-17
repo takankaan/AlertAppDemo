@@ -17,8 +17,13 @@ public class AlertsService {
 	public AlertsService(AlertsRepository alertsRepository) {
 		this.alertsRepository = alertsRepository;
 	}
-	public List<Alerts> getAllAlerts(){
-		return alertsRepository.findAll();
+	public List<Alerts> getAllAlerts(Optional<Long> userId,Optional<Long> stockId){
+		if(userId.isPresent() && stockId.isPresent())
+			return alertsRepository.findByUserIdAndStockId(userId,stockId);
+		else if(userId.isPresent())
+			return alertsRepository.findAllByUserId(userId);
+		else
+			return alertsRepository.findAll();
 	}
 	public Alerts saveOneAlert( Alerts newAlert) {
 		return alertsRepository.save(newAlert);
