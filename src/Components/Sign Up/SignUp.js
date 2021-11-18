@@ -5,7 +5,6 @@ import axios from 'axios';
 
 function SignUp() {
     const url = "https://619140e841928b001768ffc3.mockapi.io/createUser";
-
     const [user, setValues] = useState({
         name: "",
         surname: "",
