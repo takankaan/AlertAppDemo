@@ -4,44 +4,37 @@ import axios from 'axios';
 
 
 function SignUp() {
-    const url = "https://619140e841928b001768ffc3.mockapi.io/createUser";
+    const url = "/auth/register";
     const [user, setValues] = useState({
         name: "",
         surname: "",
         fatherName: "",
         motherName: "",
-        password: "",
+        hashPassword: "",
         tcNo: "",
         phone: "",
         birthPlace: "",
         birthDate: ""
     })
+    const [userId, setUserId] = useState();
 
     function handleChange(event) {
         let tarName = event.target.name;
         let value = event.target.value;
 
         setValues({ ...user, [tarName]: value }); // ilgilli attribute u değiştir.
-
-
+       // console.log(user)
     }
+
     ////////////////////////////////////////////////////
     const [passwordConfirm, setConfirmPassword] = useState()
     function handlePasswordConfirm(event) {
         //let tarName = event.target.name;
         let value = event.target.value;
         setConfirmPassword(value)
+        console.log("Password Confirm : " + passwordConfirm)
 
     }
-
-    const [formState, setFormState] = useState(2);
-
-    /*
-    0- sayfa açılışı
-    1- parola doğrulama yanlış
-    2- kayıtlı kullanıcı var
-    */
-
     /*
     const handleNameChange = (event) => {
         setValues({ ...user, name: event.target.value })
@@ -73,47 +66,35 @@ function SignUp() {
         setValues({ ...user, birthPlace: event.target.value })
     }
 */
-
-
-    const handlePasswordChange = (event) => {
-        setValues({ ...user, password: event.target.value })
-    }
-
+ 
     const handleSubmit = (event) => {
         event.preventDefault();
         //
-   
-        if ((passwordConfirm === user.password)) {//parolalar aynı girilmiş mi
+
+        if ((passwordConfirm === user.hashPassword)) {//parolalar aynı girilmiş mi
             if ((passwordConfirm !== "")) { //boş değil
-                /*
-                TC KİMLİK BİLGİLERİ KARŞILAŞTIR
-                */
-                fetch(url)
-                    .then(users => users.json())
-                    .then(userList =>  {
-                        for (var i = 0; i < userList.length; i++) {
-                            if (userList[i].tcNo === user.tcNo) {
-                                alert("Bu tc no ile kayıt oluşturulmuş.");
-                                return;
-                            }
-                            else {
-                                if (i === userList.length - 1) {
-                                    //parola boş değil,
-                                    //doğrulama başarılı,
-                                    //tc no ya ait başka kayıt yok
-                                    axios.post(url, user);
-                                    alert("kayıt oluşturuldu");
-                                    console.log(user)
-                                    //tokenlar local storage ta tutulur
-                                }
-                            }
-                        }
+                //console.log("doğru bölge")
+                //console.log(user)
+                
+                //Tc kimlik bilgisini long değerine dönüştürme
+                setValues({...user, "tcNo" : +user.tcNo})
 
-                    })
+                try {
+                axios.post(url, user)
+                .then(resp => {setUserId(resp.data.id)
+                console.log(resp.data.id)
+                })
+                
+                }
+                
+                catch(e) {
+                    alert(e);
+                }
+                console.log("current user id : " + userId);
+
+                }
 
 
-
-            }
             else {
                 alert("parola boş bırakılamaz.");
                 return;
@@ -121,41 +102,18 @@ function SignUp() {
         }
 
         else {
-            setFormState(1);
+
             alert("parola hatası");
             return;
         }
 
     }
     //uyarılar için kullanılacak
-    function ManageAlert() {
-        switch (formState) {
-            case 0://açılış ekranı (alert metni yok)
-                return (
-                    null
-                )
-            case 1://tc kimlik eşleşti.
-                console.log("tc kimlik ha tası")
-                return (<Alert color="warning"> İlgili Tc Kimliğe ait kullanıcı bulundu
-                    <a
-                        className="alert-link"
-                        href="#"
-                    >
-                        an example link
-                    </a>
-                    . Give it a click if you like.
-                </Alert>
-                )
-            case 2:
-                return (
-                    <Alert color="danger"> This is a danger alert with{' '} <a className="alert-link " href="#">an example link</a> Give it a click if you like.</Alert>
-                )
-        }
-    }
+
 
     return (
         <div>
-            {ManageAlert}
+
             <Form onSubmit={handleSubmit} >
                 <Table bordered>
                     <thead>
@@ -206,12 +164,12 @@ function SignUp() {
                                     Parola
                                 </Label>
                                 <Input
-                                    id="password"
-                                    name="password"
+                                    id="hashPassword"
+                                    name="hashPassword"
                                     placeholder="parola"
                                     type="password"
                                     value={user.password}
-                                    onChange={handlePasswordChange}
+                                    onChange={handleChange}
 
                                 />
                             </FormGroup> </th>
