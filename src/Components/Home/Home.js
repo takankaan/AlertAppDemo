@@ -7,7 +7,6 @@ export default function Home() {
     const {userId} = 1 //gelecek olan kullanıcının id si
     const url = "/user/" + 1
 
-    
 
     return (
         <div>

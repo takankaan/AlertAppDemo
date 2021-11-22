@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { CarouselControl,  Col, Container, Form, Row } from 'reactstrap'
 import Home from '../Home/Home';
 import { Navigate, Route, Routes } from 'react-router';
+import SignUp from '../Sign Up/SignUp';
 
 
 export default function Login() {
@@ -40,7 +41,8 @@ export default function Login() {
             if(response.data != "") {
                 //kayıt bulundu, home page e yönlendir
                 console.log(response.data)
-                alert("kullanıcı var")
+               // alert("kullanıcı var")
+                return <SignUp/>
                 //window.location.replace("/home/{response.data.id}")
             }
             else {
