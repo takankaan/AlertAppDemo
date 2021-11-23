@@ -1,7 +1,10 @@
-import React, { Component, useState,useEffect, setState } from 'react'
+import React, { Component, useState, useForm, useEffect, setState } from 'react'
 import { Form, Row, FormGroup, Label, Input, Table } from 'reactstrap'
 import axios from 'axios';
 import { Alert, Snackbar } from '@mui/material';
+import AllValidations  from "../Validations/AllValidations.js"
+import * as yup from "yup";
+
 
 
 function SignUp() {
@@ -24,8 +27,7 @@ function SignUp() {
         text:null
     }) //for managing alerts
 
- 
-    
+  
 
     /*-----------FORM ÜZERİNDEKİ İNPUTLARA HER GİRDİ VERİLDİĞİNDE BU ALAN ÇALIŞIR. (passwordConfirm hariç) --------*/
     function handleChange(event) {
@@ -44,6 +46,7 @@ function SignUp() {
         console.log("Password Confirm : " + passwordConfirm)
 
     }
+
     /*
     const handleNameChange = (event) => {
         setValues({ ...user, name: event.target.value })
@@ -74,49 +77,65 @@ function SignUp() {
     const handleBirthPlaceChange = (event) => {
         setValues({ ...user, birthPlace: event.target.value })
     }
-*/
- 
+    */
+
+
+    //validasyon
+const validationSchema = yup.object().shape({
+    name: yup.string().required("Bu alan boş bırakılamaz"),
+    surname: yup.string().required("Bu alan boş bırakılamaz"),
+    fatherName: yup.string().required("Bu alan boş bırakılamaz"),
+    motherName: yup.string().required("Bu alan boş bırakılamaz"),
+    hashPassword: yup.string().min(6).required("Bu alan boş bırakılamaz"),
+    tcNo: yup.string().required("Bu alan boş bırakılamaz"),
+    phone: yup.number().required("Bu alan boş bırakılamaz").min(8),
+    birthPlace: yup.string().required("Bu alan boş bırakılamaz"),
+    birthDate: yup.string().required("Bu alan boş bırakılamaz")
+  })
+
 
     /* ------- Kayıt ol butonuna basıldığında bu alan çalışır. ------------*/
     const handleSubmit = (event) => {
         event.preventDefault();
         
+        if(passwordConfirm === user.hashPassword) {
 
-        if ((passwordConfirm === user.hashPassword)) {//parolalar aynı girilmiş mi
-            if ((passwordConfirm !== "")) { //boş değil
-                //password ve passwordConfirm değerleri aynı ve boş değil. Kayıt işlemi için post gönderilecek.
-                
-                //Tc kimlik bilgisini long değerine dönüştürme
-                setValues({...user, "tcNo" : +user.tcNo})
+        //yup validation--------
+        const isValid = validationSchema.isValid(user)
 
-                axios.post(url, user)
-                .then(resp => { 
-                    if(resp.data !== null) { //gelen değer null değil ise, kayıt oluşturulmuştur. formstatus u 1 yap. 
-                        setUserId(resp.data.id);
-                        setMessage({text:"Kayıt Oluşturuldu", status:"success"}) // kayıt oluşturuldu.
-                        //console.log(userId);
-                    }
-                    else {
-                        //alert("Bu tc no kullanılmış.") //gelen değer null ise, aynı tcno ya ait kullanıcı var demektir. formstatus u 2 yap.
-                        setMessage({text : "bu tc kullanıldı", status : "error"})
-                    }
-                })
+        console.log(isValid.then(
+            result => {
+                if(result) {
+                    //veriler post göndermeye uygun
+                    setValues({...user, "tcNo" : +user.tcNo})
+
+                    axios.post(url, user)
+                    .then(resp => { 
+                        if(resp.data !== null) { //gelen değer null değil ise, kayıt oluşturulmuştur. formstatus u 1 yap. 
+                            setUserId(resp.data.id);
+                            setMessage({text:"Kayıt Oluşturuldu", status:"success"}) // kayıt oluşturuldu.
+                            //console.log(userId);
+                        }
+                        else {
+                            //alert("Bu tc no kullanılmış.") //gelen değer null ise, aynı tcno ya ait kullanıcı var demektir. formstatus u 2 yap.
+                            setMessage({text : "Bu tc kullanıldı", status : "error"})
+                        }
+                    })
                 }
-
-
-            else {
-                alert("parola boş bırakılamaz.");
-                return;
+                else {
+                    console.log(validationSchema.typeError)
+                    setMessage({text:"Lütfen gerekli alanları eksiksiz ve doğru biçimde doldurun", status:"error"}) // kayıt oluşturuldu.
+                }
             }
-        }
-
-        else {
-
-            alert("parola hatası");
-            return;
-        }
-
+        ))
     }
+    else {
+        setMessage({text:"Parola doğrulama kısmını doğru yazdığınıza emin olun.", status:"error"}) // kayıt oluşturuldu.
+    }
+        
+}
+
+
 
 
     
@@ -132,29 +151,6 @@ function SignUp() {
       };
 
 
-    //alert için kullanılacak
-    /*
-    const AlertManager = () => {
-        console.log("alert manager çalıştı.")
-        switch(formStatus) {
-            case 0://sayfa yeni açıldı, alert mesajı yok
-            return null 
-            case 1://kayıt başarıyla oluşturuldu
-            return  <Snackbar open={true} autoHideDuration={12000} onClose={handleClose}>
-                        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                            This is a success message!
-                        </Alert>
-                    </Snackbar>
-            case 2://aynı tc ye ait kullanıcı vardır (error alert)
-
-
-            default:
-            return null
-        }
-    }
-    */ 
-
-
     return (
         <div>
            {message.text && <Snackbar open={true} autoHideDuration={1200} onClose={handleClose}>
@@ -168,7 +164,7 @@ function SignUp() {
                         <tr>
                             <th> <FormGroup>
                                 <Label for="name">
-                                    İsim
+                                    İsim*
                                 </Label>
                                 <Input
                                     id="name"
@@ -182,7 +178,7 @@ function SignUp() {
 
                             <th> <FormGroup>
                                 <Label for="surname">
-                                    Soy İsim
+                                    Soy İsim*
                                 </Label>
                                 <Input
                                     id="surname"
@@ -191,13 +187,14 @@ function SignUp() {
                                     value={user.surname}
                                     onChange={handleChange}
                                 />
+                                <span>{}</span>
                             </FormGroup></th>
                         </tr>
 
                         <tr>
                             <th> <FormGroup>
                                 <Label for="TcNo">
-                                    Tc Kimlik No
+                                    Tc Kimlik No*
                                 </Label>
                                 <Input
                                     id="tcNo"
@@ -209,7 +206,7 @@ function SignUp() {
 
                             <th>  <FormGroup>
                                 <Label for="examplePassword">
-                                    Parola
+                                    Parola*
                                 </Label>
                                 <Input
                                     id="hashPassword"
@@ -218,15 +215,16 @@ function SignUp() {
                                     type="password"
                                     value={user.password}
                                     onChange={handleChange}
-
                                 />
-                            </FormGroup> </th>
+                            </FormGroup> 
+                            <span>En az 6 karakter kullanın</span>
+                            </th>
                         </tr>
                         <tr>
                             <th>
                                 <FormGroup>
                                     <Label for="examplePassword">
-                                        Parola Tekrar
+                                        Parola Tekrar*
                                     </Label>
                                     <Input
                                         id="passwordConfirm"
@@ -234,10 +232,13 @@ function SignUp() {
                                         placeholder="parola"
                                         type="password"
                                         onChange={handlePasswordConfirm}
-                                    />    </FormGroup>  </th>
+                                    />   
+                                   
+                                     </FormGroup>  </th>
+
                             <th> <FormGroup>
                                 <Label for="surname">
-                                    Baba Adı
+                                    Baba Adı*
                                 </Label>
                                 <Input
                                     id="fatherName"
@@ -252,7 +253,7 @@ function SignUp() {
                         <tr>
                             <th> <FormGroup>
                                 <Label for="surname">
-                                    Anne Adı
+                                    Anne Adı*
                                 </Label>
                                 <Input
                                     id="motherName"
@@ -264,7 +265,7 @@ function SignUp() {
                             </FormGroup></th>
                             <th> <FormGroup>
                                 <Label for="surname">
-                                    Telefon
+                                    Telefon*
                                 </Label>
                                 <Input
                                     id="phone"
@@ -279,7 +280,7 @@ function SignUp() {
                         <tr>
                             <th> <FormGroup>
                                 <Label for="exampleDate">
-                                    Doğum Günü
+                                    Doğum Günü*
                                 </Label>
                                 <Input
                                     id="birthDate"
@@ -292,7 +293,7 @@ function SignUp() {
                             </FormGroup> </th>
                             <th><FormGroup>
                                 <Label for="exampleCity">
-                                    Doğum Yeri
+                                    Doğum Yeri*
                                 </Label>
                                 <Input
                                     id="birthPlace"
@@ -310,6 +311,7 @@ function SignUp() {
                 <Input type="submit" value="Kaydol" />
             </Form>
         </div>
+
     )
 
 }
