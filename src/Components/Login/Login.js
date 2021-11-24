@@ -1,19 +1,16 @@
 import axios from 'axios';
-import React, { Component, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
-import { CarouselControl,  Col, Container, Form, Row } from 'reactstrap'
-import Home from '../Home/Home';
-import { Navigate, Route, Routes } from 'react-router';
-import SignUp from '../Sign Up/SignUp';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import {  Col, Container, Form, Row } from 'reactstrap'
 
 
-export default function Login() {
 
-
+export default function Login(props) {
     const[user, setUser] = useState({
         tcNo: "",
         hashPassword: ""
     })
+    let navigate = useNavigate();
 
     const onChangeHandler = (event) => {
         let tarName = event.target.name;
@@ -22,7 +19,7 @@ export default function Login() {
         setUser({...user, [tarName] : value})
 
 
-        console.log(user);
+        //console.log(user);
         
     }
 
@@ -40,18 +37,15 @@ export default function Login() {
           
             if(response.data != "") {
                 //kayıt bulundu, home page e yönlendir
-                console.log(response.data)
+              //  console.log(response.data)
                // alert("kullanıcı var")
-                return <SignUp/>
-                //window.location.replace("/home/{response.data.id}")
+                localStorage.setItem("currentUserId", response.data.id)
+                localStorage.setItem("userName",response.data.name)
+                navigate("/home/" + response.data.id)
             }
             else {
                 alert("hatalı tc no veya şifre.");
             }
-            
-
-           
-
         })
     }
 

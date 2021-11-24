@@ -79,9 +79,8 @@ function SignUp() {
     }
     */
 
-
     //validasyon
-const validationSchema = yup.object().shape({
+    const validationSchema = yup.object().shape({
     name: yup.string().required("Bu alan boş bırakılamaz"),
     surname: yup.string().required("Bu alan boş bırakılamaz"),
     fatherName: yup.string().required("Bu alan boş bırakılamaz"),
@@ -102,6 +101,7 @@ const validationSchema = yup.object().shape({
 
         //yup validation--------
         const isValid = validationSchema.isValid(user)
+        
 
         console.log(isValid.then(
             result => {
@@ -109,18 +109,21 @@ const validationSchema = yup.object().shape({
                     //veriler post göndermeye uygun
                     setValues({...user, "tcNo" : +user.tcNo})
 
-                    axios.post(url, user)
-                    .then(resp => { 
-                        if(resp.data !== null) { //gelen değer null değil ise, kayıt oluşturulmuştur. formstatus u 1 yap. 
-                            setUserId(resp.data.id);
-                            setMessage({text:"Kayıt Oluşturuldu", status:"success"}) // kayıt oluşturuldu.
-                            //console.log(userId);
-                        }
-                        else {
-                            //alert("Bu tc no kullanılmış.") //gelen değer null ise, aynı tcno ya ait kullanıcı var demektir. formstatus u 2 yap.
-                            setMessage({text : "Bu tc kullanıldı", status : "error"})
-                        }
-                    })
+                        axios.post(url, user)
+                        .then(resp => { 
+                            if(resp.data !== null) { //gelen değer null değil ise, kayıt oluşturulmuştur. formstatus u 1 yap. 
+                                setUserId(resp.data.id);
+                                setMessage({text:"Kayıt Oluşturuldu", status:"success"}) // kayıt oluşturuldu.
+                                //console.log(userId);
+                            }
+                            else {
+                                //alert("Bu tc no kullanılmış.") //gelen değer null ise, aynı tcno ya ait kullanıcı var demektir. formstatus u 2 yap.
+                                setMessage({text : "Bu tc kullanıldı", status : "error"})
+                            }
+                        })
+                    
+               
+                   
                 }
                 else {
                     console.log(validationSchema.typeError)

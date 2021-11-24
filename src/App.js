@@ -7,7 +7,7 @@ import SignUp from './Components/Sign Up/SignUp';
 import Home from './Components/Home/Home';
 import { Route, Routes } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import  Demo from './Components/Demo'
+
 
 function App() {
   return (
@@ -17,8 +17,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="signup/" element={<SignUp />} />
         <Route path="stocklist/" element={<StockList />} />
-        <Route path="home/" element={<Home/>}/>
-      
+        <Route path="home/:userId" exact element={<Home/>}/>
 
         
       </Routes>

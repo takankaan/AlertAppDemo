@@ -4,7 +4,7 @@ export default class AllValidations {
     /*  -------- KULLANILMIYOR -----------  */ 
 constructor() {
     //for register validation
-let signUpFormValidation = yup.object.shape({
+const signUpFormValidation = yup.object.shape({
     name: yup.string().required(),
     surname: yup.string().required(),
     fatherName: yup.string().required(),
