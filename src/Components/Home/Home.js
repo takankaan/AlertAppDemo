@@ -1,15 +1,18 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { get } from 'react-hook-form';
-import {useParams}  from "react-router-dom"
+import { BrowserRouter, useParams, Outlet } from "react-router-dom"
+import NotFound from '../NotFound';
+import { Route, Routes } from 'react-router';
+import AlertComponent from './AlertList/AlertComponent';
+import NavbarComponent from './Navbar/NavbarComponent';
+import Profile from './Profile/Profile';
+import StockList from '../Stocks/StockList';
+
 
 export default function Home() {
-  
-    var id = localStorage.getItem("currentUserId")
-    var name = localStorage.getItem("userName")
-    var dataUrl = "/user/" + id
 
-    const[currentUser, setCurrentUser] = useState({
+    const [currentUser, setCurrentUser] = useState({
         name: "",
         surname: "",
         fatherName: "",
@@ -20,23 +23,27 @@ export default function Home() {
         birthPlace: "",
         birthDate: ""
     })
-    const[userData, setUserData] = useState("");
+
+    useEffect(() => {
+        getData()
+    }, [])
     
 
-    axios.get(dataUrl)
-    .then(response => {
-        console.log(response.data)
-        setCurrentUser(response.data)
-         setUserData(JSON.stringify(currentUser))
-    })
-
-
+    const getData =() => {
+      const user = localStorage.getItem("currentUser")
+      const userData = JSON.parse(user)
+      setCurrentUser(userData);
+      console.log(userData)
+    }
+        
     
+
+
     return (
-        <div> 
-            {
-                userData
-            }
+        <div>
+            <NavbarComponent user = {currentUser.name} id = {currentUser.id} />
+            <Outlet />
+          
         </div>
     )
 }

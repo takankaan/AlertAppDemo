@@ -2,7 +2,6 @@ import React, { Component, useState, useForm, useEffect, setState } from 'react'
 import { Form, Row, FormGroup, Label, Input, Table } from 'reactstrap'
 import axios from 'axios';
 import { Alert, Snackbar } from '@mui/material';
-import AllValidations  from "../Validations/AllValidations.js"
 import * as yup from "yup";
 
 

@@ -15,13 +15,10 @@ export default function Login(props) {
     const onChangeHandler = (event) => {
         let tarName = event.target.name;
         let value = event.target.value;
-
         setUser({...user, [tarName] : value})
-
-
-        //console.log(user);
-        
+        //console.log(user); 
     }
+
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
@@ -39,9 +36,14 @@ export default function Login(props) {
                 //kayıt bulundu, home page e yönlendir
               //  console.log(response.data)
                // alert("kullanıcı var")
-                localStorage.setItem("currentUserId", response.data.id)
-                localStorage.setItem("userName",response.data.name)
-                navigate("/home/" + response.data.id)
+
+                localStorage.clear() //önceki girişten kayıtlı kalan kullanıcının verilerini temizle.
+                localStorage.setItem("currentUser", JSON.stringify(response.data))
+
+
+
+                console.log(response.data.id)
+                navigate("/home")
             }
             else {
                 alert("hatalı tc no veya şifre.");
