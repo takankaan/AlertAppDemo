@@ -33,7 +33,6 @@ export default function Home() {
       const user = localStorage.getItem("currentUser")
       const userData = JSON.parse(user)
       setCurrentUser(userData);
-      console.log(userData)
     }
         
     

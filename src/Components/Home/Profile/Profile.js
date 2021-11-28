@@ -2,7 +2,7 @@ import { blue } from '@mui/material/colors'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row, Table } from 'reactstrap'
-import ChangePassword from './ChangePassword/ChangePassword'
+import AdvancedSettings from './Advanced/AdvancedSettings'
 
 export default function Profile(props) {
 
@@ -20,11 +20,16 @@ export default function Profile(props) {
         birthDate: " "
     })
 
+
+
     const [changePasswordState, setChangePasswordState] = useState(false)
 
     useEffect(() => {
         getData()
     }, []) //sayfa açılırken veriler alınsın
+
+    
+
 
 
 
@@ -35,17 +40,26 @@ export default function Profile(props) {
         console.log(userData)
     }
 
-    function handleChange() {
 
-    }
 
     function handleSubmit() {
 
     }
 
+
+     /*-----------FORM ÜZERİNDEKİ İNPUTLARA HER GİRDİ VERİLDİĞİNDE BU ALAN ÇALIŞIR. (passwordConfirm hariç) --------*/
+     function handleChange(event) {
+        let tarName = event.target.name;
+        let value = event.target.value;
+
+        setCurrentUser({ ...user, [tarName]: value }); // change the attribute that named tarName
+        console.log(user)
+    }
+
+
     function openPasswordWindow() {
         setChangePasswordState(!changePasswordState);
-        console.log(changePasswordState)
+        //console.log(changePasswordState)
     }
 
     return (
@@ -178,12 +192,12 @@ export default function Profile(props) {
                         </Form>
                     </Row>
                     <Row>
-                        <Button color="warning" onClick={openPasswordWindow}>Parola değiştirmek için tıklayın</Button>{' '}
+                        <Button color="warning" onClick={openPasswordWindow}>Gelişmiş ayarlar</Button>
                     </Row>
                 </Col>
                 <Col>
                     <Row>
-                        {changePasswordState ? <ChangePassword /> : null}
+                        {changePasswordState ? <AdvancedSettings password = {user.hashPassword} /> : null}
                     </Row>
                 </Col>
             </Row>
