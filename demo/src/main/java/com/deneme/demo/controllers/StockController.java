@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.deneme.demo.entities.Stock;
+import com.deneme.demo.entities.StockModel;
 import com.deneme.demo.requests.SoftDeleteRequest;
 import com.deneme.demo.services.StockService;
 
@@ -28,26 +28,26 @@ public class StockController {
 	}
 	
 	@GetMapping
-	public List<Stock> getAllStock(){
-		return stockService.getAllStock();
+	public List<StockModel> updateAndGetAllStocks(){
+		return stockService.updateAndGetAllStocks();
 	}
 	
-	@GetMapping("/{stockId}")
-	public Stock getOneStock(@PathVariable Long stockId) {
-		return stockService.getOneStock(stockId);
+	@GetMapping("/{ticker}")
+	public StockModel getOneStock(@PathVariable String ticker) {
+		return stockService.getOneStock(ticker);
 	}
 	
-	@PostMapping
-	public Stock saveOneStock(@RequestBody Stock newStock) {
-		return stockService.saveOneStock(newStock);
+	@PostMapping("/{ticker}")
+	public StockModel saveOneStock(@PathVariable String ticker) {
+		return stockService.saveOneStock(ticker);
 	}
 	
-	@DeleteMapping("/{stockId}")
-	public void deleteOneStock(@PathVariable Long stockId) {
-		stockService.deleteStock(stockId);
+	@DeleteMapping("/{ticker}")
+	public void deleteOneStock(@PathVariable String ticker) {
+		stockService.deleteStock(ticker);
 	}
-	@PutMapping("/{stockId}")
-	public Stock softDeleteStock(@PathVariable Long stockId,@RequestBody SoftDeleteRequest deleteRequest) {
-		return stockService.softDeleteStock(stockId, deleteRequest);
+	@PutMapping("/{ticker}")
+	public StockModel softDeleteStock(@PathVariable String ticker,@RequestBody SoftDeleteRequest deleteRequest) {
+		return stockService.softDeleteStock(ticker, deleteRequest);
 	}
 }
