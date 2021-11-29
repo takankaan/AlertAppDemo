@@ -1,5 +1,6 @@
 package com.deneme.demo.entities;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ public class Alerts {
 	
 	Long stockId;
 	
-	float alertPrice;
+	BigDecimal alertPrice;
 	
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
 	Date createdDate = new Date(System.currentTimeMillis());

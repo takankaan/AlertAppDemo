@@ -13,4 +13,6 @@ public interface AlertsRepository extends JpaRepository<Alerts, Long> {
 
 	List<Alerts> findByUserIdAndStockId(Optional<Long> userId, Optional<Long> stockId);
 
+	List<Alerts> findAllByStockId(Long id);
+
 }
