@@ -7,4 +7,6 @@ import com.deneme.demo.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	
 	User findByTcNo(Long tcNo);
+
+	boolean existsByTcNo(Long tcNo);
 }
