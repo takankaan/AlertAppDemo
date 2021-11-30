@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   Collapse,
   Navbar,
@@ -21,12 +22,16 @@ export default class NavbarComponent extends React.Component {
       isOpen: false
     };
     console.log(this.props.user)
-   
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  logout = () => {
+    localStorage.clear()
   }
 
   render() {
@@ -56,7 +61,7 @@ export default class NavbarComponent extends React.Component {
                   <Link to="profile" style={{textDecoration: "none",color:'black'}}>Profil Bilgilerim</Link>  
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>
+                  <DropdownItem onClick = {this.logout} href="/">
                     Çıkış Yap
                   </DropdownItem>
                 </DropdownMenu>

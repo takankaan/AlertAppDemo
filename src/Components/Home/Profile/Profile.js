@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row, Table } from 'reactstrap'
 import AdvancedSettings from './Advanced/AdvancedSettings'
 
-export default function Profile(props) {
+export default function Profile() {
 
 
 
@@ -63,7 +63,7 @@ export default function Profile(props) {
     }
 
     return (
-        <Container fluid="md" style={{ backgroundColor: blue }}>
+        <Container >
             <Row>
                 <Col >
                     <Row >
@@ -109,6 +109,7 @@ export default function Profile(props) {
                                                 id="tcNo"
                                                 name="tcNo"
                                                 placeholder="Tc"
+                                                disabled="disabled"
                                                 value={user.tcNo}
                                                 onChange={handleChange}
                                             /></FormGroup>
@@ -192,12 +193,12 @@ export default function Profile(props) {
                         </Form>
                     </Row>
                     <Row>
-                        <Button color="warning" onClick={openPasswordWindow}>Gelişmiş ayarlar</Button>
+                        <Button color="warning" className="mt-4" onClick={openPasswordWindow}>Gelişmiş ayarlar</Button>
                     </Row>
                 </Col>
                 <Col>
                     <Row>
-                        {changePasswordState ? <AdvancedSettings password = {user.hashPassword} /> : null}
+                        {changePasswordState ? <AdvancedSettings id = {user.id} tcNo = {user.tcNo} /> : null}
                     </Row>
                 </Col>
             </Row>
