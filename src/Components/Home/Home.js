@@ -6,8 +6,7 @@ import NotFound from '../NotFound';
 import { Route, Routes } from 'react-router';
 import AlertComponent from './AlertList/AlertComponent';
 import NavbarComponent from './Navbar/NavbarComponent';
-import Profile from './Profile/Profile';
-import StockList from '../Stocks/StockList';
+
 
 
 export default function Home() {
@@ -27,7 +26,7 @@ export default function Home() {
     useEffect(() => {
         getData()
     }, [])
-    
+
 
     const getData =() => {
       const user = localStorage.getItem("currentUser")

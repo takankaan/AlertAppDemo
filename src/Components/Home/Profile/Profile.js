@@ -1,26 +1,19 @@
-import { blue } from '@mui/material/colors'
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row, Table } from 'reactstrap'
 import AdvancedSettings from './Advanced/AdvancedSettings'
+import axios from 'axios'
+
 
 export default function Profile() {
-
-
-
     const [user, setCurrentUser] = useState({
         name: " ",
         surname: " ",
         fatherName: " ",
         motherName: " ",
-        hashPassword: " ",
-        tcNo: " ",
         phone: " ",
         birthPlace: " ",
         birthDate: " "
     })
-
-
 
     const [changePasswordState, setChangePasswordState] = useState(false)
 
@@ -28,21 +21,43 @@ export default function Profile() {
         getData()
     }, []) //sayfa açılırken veriler alınsın
 
-    
-
-
-
-
     const getData = () => {
         const u = localStorage.getItem("currentUser")
         const userData = JSON.parse(u)
+        
         setCurrentUser(userData);
-        console.log(userData)
+        //console.log(userData)
     }
 
+    function handleSubmit(event) {
+        event.preventDefault()
+        delete user.tcNo
+        delete user.deleted
+        delete user.hashPassword
+        delete user.createdDate
+        delete user.updatedDate
 
+        const url = "/user/" + user.id //url i oluşturmak için id en son silinecek
+        delete user.id
+        console.log(user)
 
-    function handleSubmit() {
+        //user objesi istenen değerleri içermektedir.
+        axios.put(url,user)
+        .then(response => {
+            if(response.data != "") {
+                alert("Bilgiler Başarıyla Değiştirildi.")
+                localStorage.clear()
+                localStorage.setItem("currentUser", JSON.stringify(response.data))
+               
+            }
+            else {
+                alert("hata")
+            }
+
+        })
+       
+        
+        
 
     }
 
@@ -189,7 +204,7 @@ export default function Profile() {
 
                                 </thead>
                             </Table>
-                            <Input type="submit" value="Değişiklikleri kaydet" />
+                            <Input type="submit" value="Değişiklikleri kaydet" onClick={handleSubmit} />
                         </Form>
                     </Row>
                     <Row>

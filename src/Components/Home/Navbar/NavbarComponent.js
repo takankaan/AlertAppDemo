@@ -24,6 +24,10 @@ export default class NavbarComponent extends React.Component {
     console.log(this.props.user)
   }
 
+  componentDidUpdate() {
+    
+  }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
