@@ -10,6 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import AlertComponent from './Components/Home/AlertList/AlertComponent';
 import Profile from './Components/Home/Profile/Profile';
 import NotFound from './Components/NotFound';
+import ChartComponent from './Components/Home/AlertList/StockChart/ChartComponent';
+import CreateAlert from './Components/Home/AlertList/CreateAlert/CreateAlert';
 
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
             <Route path="" element={<StockList />} />
             <Route path="myAlerts" element={<AlertComponent />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="chartPage" element={<ChartComponent/>} />
+            <Route path="createAlert" element={<CreateAlert/>} />
             <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

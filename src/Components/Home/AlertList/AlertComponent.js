@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
-import { Button, Col, Row, Table } from 'reactstrap';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Grid, svgIconClasses } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button, Col, Container, Row, Table } from 'reactstrap';
+import { Grid } from '@mui/material';
 
 //icon imports
 import DeleteForeverSharpIcon from '@mui/icons-material/DeleteForeverSharp';
 import EditIcon from '@mui/icons-material/Edit';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
 //dialog imports
 import Dialog from '@mui/material/Dialog';
@@ -22,17 +24,21 @@ export default function AlertComponent() {
 
 
     const [alertList, setAlertList] = useState([{}])
-    const [open, setOpen] = React.useState(false); //alert state
+    const [openForm, setOpenForm] = useState({
+        openState: false,
+        id: -1
+    }); //alert state
 
 
     useEffect(() => {
         getData()
     }, [])
 
+    const navigate = useNavigate() //to stock chart 
+
 
 
     const getData = () => {
-
         const user = localStorage.getItem("currentUser")
         const userId = JSON.parse(user).id
         const dataURL = "/alerts?userId=" + userId
@@ -42,34 +48,45 @@ export default function AlertComponent() {
                 setAlertList(response.data)
                 console.log(response.data)
             })
-
     }
 
 
-    const editItem = (item) => {
-        alert(item.id);
-        //edit alert
-    }
 
-    const removeItem = (item) => {
-        console.log(item)
+    const removeItem = () => {
         //delete alert
-        setOpen(false)
+        //alert(openForm.id + " numaralı eleman silinecek.")
+        const url = "/alerts/" + openForm.id;
+        var removeAlert = { deleted: true }
+
+        axios.put(url, removeAlert)
+            .then(response => {
+                if (response.data != "") {
+                    alert(openForm.id + " numaralı alarm silindi.")
+                }
+            })
+        getData() //listeyi yeniden güncelle
+        setOpenForm({ openState: false, id: openForm.id })
 
     }
-    const navigateCharPage = (item) => {
+    const navigateCharPage = (itemId) => {
+        // alert(id)
+        navigate("/home/chartPage", { state: { id: itemId } })
 
     }
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenForm({ openState: false, id: openForm.id })
     };
 
     //open dialog
     const handleClickOpen = (item) => {
-        setOpen(true);
-        console.log(item)
+        setOpenForm({ openState: true, id: item.id });
+        console.log(openForm)
     };
+
+    const newAlertPage = () => {
+        navigate("/home/createAlert")
+    }
 
 
     return (
@@ -83,39 +100,33 @@ export default function AlertComponent() {
                         <th> Created Date</th>
                         <th> Updated Date</th>
                         <th> Alert Direction </th>
-                        <th> İşlem </th>
+                        <th> Process </th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         alertList.map((singleAlert) => (
+
                             <tr key={singleAlert.id}>
                                 <td > {singleAlert.id} </td>
                                 <td> {singleAlert.stockId} </td>
                                 <td> {singleAlert.alertPrice} </td>
                                 <td> {singleAlert.createdDate} </td>
                                 <td> {singleAlert.updatedDate} </td>
-                                <td> {singleAlert.alertDirection ? "yukarı" : "aşağı"} </td>
+                                <td> {singleAlert.alertDirection ? <ArrowCircleUpIcon fontSize="large" color="success" /> : <ArrowCircleDownIcon fontSize="large" color="error" />} </td>
                                 <td>
-                                    <Col >
-                                        <Grid item xs={8}>
-                                            <div onClick={() => editItem(alert)}>
-                                                <EditIcon color="warning" />
-                                            </div>
-                                        </Grid>
-                                    </Col>
                                     <Col>
-                                        <Grid item xs={8} onClick ={() => handleClickOpen(singleAlert)}>
-                                                <DeleteForeverSharpIcon color="error" />
+                                        <Grid item xs={8} onClick={() => handleClickOpen(singleAlert)}>
+                                            <DeleteForeverSharpIcon color="error" />
                                         </Grid>
                                         <Dialog
-                                            open={open}
+                                            open={openForm.openState}
                                             onClose={() => handleClose(singleAlert.id)}
                                             aria-labelledby="alert-dialog-title"
                                             aria-describedby="alert-dialog-description">
 
                                             <DialogTitle id="alert-dialog-title">
-                                                { singleAlert.id + " numaralı alarmı silmek istediğinize emin misiniz?"}
+                                                {openForm.id + " numaralı alarmı silmek istediğinize emin misiniz?"}
                                             </DialogTitle>
                                             <DialogContent>
                                                 <DialogContentText id="alert-dialog-description">
@@ -132,7 +143,7 @@ export default function AlertComponent() {
                                     </Col>
                                     <Col>
                                         <Grid item xs={8}>
-                                            <div onClick={() => navigateCharPage(alert)}>
+                                            <div onClick={() => navigateCharPage(singleAlert.id)}>
                                                 <ShowChartIcon color="success" />
                                             </div>
                                         </Grid>
@@ -141,9 +152,13 @@ export default function AlertComponent() {
                                 </td>
                             </tr>
                         ))
+
                     }
                 </tbody>
             </Table>
+            <div>
+                <Button onClick={newAlertPage} color="success" style={{ marginTop: 50, width: "50%", marginLeft:"25%" }}> Create New Alert</Button>
+            </div>
         </div>
     )
 }
