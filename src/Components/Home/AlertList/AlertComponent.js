@@ -90,8 +90,8 @@ export default function AlertComponent() {
 
 
     return (
-        <div>
-            <Table>
+        <div className="container ">
+            <Table className="table table-striped table-bordered mt-4  mx-auto">
                 <thead>
                     <tr>
                         <th> #Alert id</th>
