@@ -23,15 +23,13 @@ export default function Login(props) {
     const onSubmitHandler = (event) => {
         event.preventDefault();
         var url = "/auth/login"
-        
-
+      
         //tc kimlik, long tipine dönüştürülmeli!!
         user.tcNo = +user.tcNo;
         
 
         axios.post(url,user)
         .then(response => {
-          
             if(response.data != "") {
                 //kayıt bulundu, home page e yönlendir
               //  console.log(response.data)
@@ -75,6 +73,7 @@ export default function Login(props) {
         
             </Container>
         </div>
+
     )
 
 }
