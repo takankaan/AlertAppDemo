@@ -22,7 +22,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function AlertComponent() {
 
-
     const [alertList, setAlertList] = useState([{}])
     const [openForm, setOpenForm] = useState({
         openState: false,
