@@ -10,9 +10,10 @@ import { BrowserRouter } from 'react-router-dom';
 import AlertComponent from './Components/Home/AlertList/AlertComponent';
 import Profile from './Components/Home/Profile/Profile';
 import NotFound from './Components/NotFound';
-import ChartComponent from './Components/Home/AlertList/StockChart/ChartComponent';
+import ChartComponent from './Components/Home/StockChart/ChartComponent';
 import CreateAlert from './Components/Home/AlertList/CreateAlert/CreateAlert';
-import DisplayChart from './Components/Stocks/DisplayChart/DisplayChart';
+import DisplayDetails from './Components/Stocks/DisplayDetails/DisplayDetails';
+import AlertDetails from './Components/Home/AlertList/AlertDetails';
 
 
 function App() {
@@ -24,11 +25,11 @@ function App() {
         <Route path="signup/" element={<SignUp />} />
         <Route path="home/" element={<Home/>} > 
             <Route path="" element={<StockList />} />
-            <Route path="myAlerts" element={<AlertComponent />} />
+            <Route path="alerts" element={<AlertComponent />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="chartPage" element={<ChartComponent/>} />
+            <Route path="alert/:alertId" element={<AlertDetails/>} />
             <Route path="createAlert" element={<CreateAlert/>} />
-            <Route path="displayChart" element={<DisplayChart/>} />
+            <Route path="details/:stockId" element={<DisplayDetails/>} />
             
             <Route path="*" element={<NotFound />} />
         </Route>

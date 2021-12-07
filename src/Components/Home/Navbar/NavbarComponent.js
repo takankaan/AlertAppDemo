@@ -59,7 +59,7 @@ export default class NavbarComponent extends React.Component {
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>
-                    <Link to ="myAlerts" style={{textDecoration: "none",color:'black'}}> Alarmlarım </Link>
+                    <Link to ="alerts" style={{textDecoration: "none",color:'black'}}> Alarmlarım </Link>
                   </DropdownItem>
                   <DropdownItem>
                   <Link to="profile" style={{textDecoration: "none",color:'black'}}>Profil Bilgilerim</Link>  

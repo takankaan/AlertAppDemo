@@ -1,63 +1,88 @@
-import React, { Component } from 'react'
-import { Link, useHistory } from 'react-router-dom';
+
+import React, { Component, useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Container, ListGroup, ListGroupItem, Row, Table } from 'reactstrap'
+import axios from 'axios';
+
+//loading icon
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 
-export default class StockList extends Component {
-    state = {
-        stockList: []
+export default function StockList() {
+
+    const [stockList, setStockList] = useState([{}])
+    const navigate = useNavigate() //to stock chart 
+
+
+    useEffect(() => {
+        getData()
+        setInterval(getData, 15000)
+        //console.log(stockList)
+    }, [])
+
+    const getData = async () => {
+        const url = "/market"
+        console.log(stockList[0].id)
+
+        await axios.get(url)
+            .then(response => {
+                setStockList(response.data)
+            })
+    }
+
+    
+   
+
+    const navigateDetailsPage = (id) => {
+        navigate("/home/details/" + id)
     }
 
 
-    componentDidMount() {
-        this.getData();
-        this.myInterval = setInterval(() => {
-            this.getData();
-        }, 5000)
-    }
+    return (
+        stockList[0].id != null
+            ?
+            <div>
+                <Table >
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Stock Name / Symbol</th>
+                            <th>Current Price</th>
+                            <th> Updated Date </th>
+                            <th> See details </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            stockList.map(stock => (
 
-
-
-    getData = () => {
-        fetch("https://619140e841928b001768ffc3.mockapi.io/stockList")
-            .then(stocks => stocks.json()
-                .then(data => this.setState({ stockList: data })))
-        console.log("data updated");
-    }
-
-
-    render() {
-        const { navigation } = this.props;
-        return (
-            <Table bordered>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Stock Name</th>
-                        <th>Stock Price</th>
-                        <th> See details </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        this.state.stockList.map(stock => {
-                            return (
                                 <tr key={stock.id}  >
                                     <th> {stock.id} </th>
-                                    <td> {stock.stockName} </td>
-                                    <td> {stock.stockPrice} </td>
+                                    <td> {stock.stockName} / {stock.stockSymbol} </td>
+                                    <td> {stock.currentValue} </td>
+                                    <td> {stock.updatedDate} </td>
                                     <td>
-                                        <Link to="/home/displayChart"  params={stock.id}>
+                              
+                                        <Button onClick = {() => navigateDetailsPage(stock.id) } color = "primary">
                                             Details
-                                        </Link>
+                                    </Button>
                                     </td>
                                 </tr>
 
-                            )
-                        })
-                    }
-                </tbody>
-            </Table >
-        )
-    }
+                            ))
+                        }
+                    </tbody>
+                </Table >
+               
+            </div>
+
+            :
+            <div class="d-flex justify-content-center">
+                <Box sx={{ display: 'flex' }}>
+                    <CircularProgress />
+                </Box>
+            </div>
+    )
 }
+

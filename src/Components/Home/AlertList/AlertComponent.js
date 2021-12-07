@@ -27,14 +27,14 @@ export default function AlertComponent() {
         openState: false,
         id: -1
     }); //alert state
+    const navigate = useNavigate()
 
 
     useEffect(() => {
         getData()
     }, [])
 
-    const navigate = useNavigate() //to stock chart 
-
+ 
 
 
     const getData = () => {
@@ -69,10 +69,11 @@ export default function AlertComponent() {
     }
     const navigateCharPage = (itemId) => {
         // alert(id)
-        navigate("/home/chartPage", { state: { id: itemId } })
+        navigate("/home/alert/" + itemId)
 
     }
 
+    
     const handleClose = () => {
         setOpenForm({ openState: false, id: openForm.id })
     };
@@ -83,9 +84,6 @@ export default function AlertComponent() {
         console.log(openForm)
     };
 
-    const newAlertPage = () => {
-        navigate("/home/createAlert")
-    }
 
 
     return (
@@ -155,9 +153,7 @@ export default function AlertComponent() {
                     }
                 </tbody>
             </Table>
-            <div>
-                <Button onClick={newAlertPage} color="success" style={{ marginTop: 50, width: "50%", marginLeft:"25%" }}> Create New Alert</Button>
-            </div>
+     
         </div>
     )
 }
