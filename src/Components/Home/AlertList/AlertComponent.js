@@ -29,7 +29,6 @@ export default function AlertComponent() {
     }); //alert state
     const navigate = useNavigate()
 
-
     useEffect(() => {
         getData()
     }, [])

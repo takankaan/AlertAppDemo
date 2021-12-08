@@ -13,6 +13,7 @@ export default function StockList() {
 
     const [stockList, setStockList] = useState([{}])
     const navigate = useNavigate() //to stock chart 
+    
 
 
     useEffect(() => {
@@ -65,7 +66,7 @@ export default function StockList() {
                                     <td>
                                         <Button onClick = {() => navigateDetailsPage(stock.id) } color = "primary">
                                             Details
-                                    </Button>
+                                        </Button>
                                     </td>
                                 </tr>
 
