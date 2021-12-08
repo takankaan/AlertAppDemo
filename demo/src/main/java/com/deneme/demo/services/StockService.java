@@ -1,8 +1,6 @@
 package com.deneme.demo.services;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -22,64 +20,79 @@ public class StockService {
 	public StockService(StockRepository stockRepository) {
 		this.stockRepository = stockRepository;
 	}
-/*	public List<StockModel> getAllStock(){
-		return stockRepository.findAll();
-	}*/
-	public StockModel getOneStock(String ticker) {
-		return stockRepository.findByStockSymbol(ticker);
+	public List<StockModel> getAllStocks(){
+		return stockRepository.findByDeletedFalse();
 	}
+	public StockModel getOneStock(String ticker) {
+			return (ticker != null) ? stockRepository.findByStockSymbol(ticker) : null;
+	}
+	
 	public void deleteStock(String ticker) {
-		StockModel stockModel =  stockRepository.findByStockSymbol(ticker);
-		if( stockModel != null)
-			stockRepository.deleteById(stockModel.getId());
+		if(ticker != null)
+			if(stockRepository.findByStockSymbol(ticker) != null)
+			{
+				stockRepository.deleteById(stockRepository.findByStockSymbol(ticker).getId());
+				System.out.println(ticker +" Stock successfully removed!");
+			}
 	}
 	public StockModel softDeleteStock(String ticker, SoftDeleteRequest deleteRequest) {
-		StockModel stock = stockRepository.findByStockSymbol(ticker);
-		if(stock != null)
+		if(ticker != null && deleteRequest !=null)
 		{
-			stock.setDeleted(deleteRequest.isDeleted());
-			stock.setUpdatedDate(deleteRequest.getUpdatedDate());
-			StockModel updatedStock = stockRepository.save(stock);
-			return updatedStock;
-		}
-		else {
+			StockModel stock = stockRepository.findByStockSymbol(ticker);
+			if(stock != null)
+			{
+				stock.setDeleted(deleteRequest.isDeleted());
+				stock.setUpdatedDate(deleteRequest.getUpdatedDate());
+				StockModel updatedStock = stockRepository.save(stock);
+				return updatedStock;
+			}
+			else
+				return null;
+		}else 
 			return null;
-		}
 	}
 	
 	public StockModel saveOneStock(String ticker) {
-		if(stockRepository.findByStockSymbol(ticker) == null) 
+		if(ticker != null)
 		{
-			StockModel stockModel = new StockModel();
-			Stock stock;
-			try {
-				stock = YahooFinance.get(ticker);
-				if(stock != null) {
-					stockModel.setStockName(stock.getName());
-					stockModel.setStockSymbol(stock.getSymbol());
-					stockModel.setCurrentValue(stock.getQuote().getPrice());
-					return stockRepository.save(stockModel);
+			if(stockRepository.findByStockSymbol(ticker) == null ) 
+			{
+				StockModel stockModel = new StockModel();
+				try {
+					Stock stock = YahooFinance.get(ticker);
+					if(stock != null) 
+					{
+						stockModel.setStockName(stock.getName());
+						stockModel.setStockSymbol(stock.getSymbol());
+						stockModel.setCurrentValue(stock.getQuote().getPrice());
+						return stockRepository.save(stockModel);
+					}
+				} 
+				catch (IOException e){
+					System.out.println("VALUE NOT FOUND! : " + e);
 				}
-			} catch (IOException e) {
-				
-				System.out.println("VALUE NOT FOUND! : " + e);
 			}
 		}
 		return null;
 	}
 	
-	public List<StockModel> updateAndGetAllStocks(){
+	/*public List<StockModel> updateAndGetAllStocks(){
 		List<String> stockList = Arrays.asList("FENER.IS","GSRAY.IS","BJKAS.IS","TSPOR.IS","THYAO.IS","ASELS.IS","SKBNK.IS","VESTL.IS","SISE.IS","PETKM.IS","PGSUS.IS","TUPRS.IS","ARCLK.IS",
 				"TTKOM.IS","OTKAR.IS","ULKER.IS","DOAS.IS","BANVT.IS","MGROS.IS","ECILC.IS","TKNSA.IS","TCELL.IS","KCHOL.IS","FRIGO.IS","TUKAS.IS","YATAS.IS","ENJSA.IS","CCOLA.IS","IHLAS.IS","AYGAZ.IS");
 		Date updatedDate = new Date(System.currentTimeMillis());
-		StockModel model = null;
+		List<StockModel> notDeletedStocks = new ArrayList<StockModel>();
+		
 		for(String stockString : stockList) {
 			try {
 				if(stockRepository.existsByStockSymbol(stockString))
 				{
-					model = stockRepository.findByStockSymbol(stockString);
-					model.setCurrentValue(YahooFinance.get(model.getStockSymbol()).getQuote().getPrice());
-					model.setUpdatedDate(updatedDate);
+					StockModel model = stockRepository.findByStockSymbol(stockString);
+					if(!model.isDeleted())
+					{
+						model.setCurrentValue(YahooFinance.get(model.getStockSymbol()).getQuote().getPrice());
+						model.setUpdatedDate(updatedDate);
+						notDeletedStocks.add(model);
+					}
 				}
 				else
 					saveOneStock(stockString);
@@ -87,6 +100,6 @@ public class StockService {
 				e.printStackTrace();
 			}
 		}
-		return stockRepository.findAll();
-	}
+		return (notDeletedStocks.size() == 0) ? null: notDeletedStocks ;
+	}*/
 }

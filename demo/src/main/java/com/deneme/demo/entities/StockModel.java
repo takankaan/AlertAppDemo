@@ -18,17 +18,17 @@ public class StockModel {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 	
-	String stockName;
-	String stockSymbol;
-	BigDecimal currentValue;
-	boolean deleted = false;
-	
-	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
-	Date createdDate = new Date(System.currentTimeMillis());
+	private String stockName;
+	private String stockSymbol;
+	private BigDecimal currentValue;
+	private boolean deleted = false;
 	
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
-	Date updatedDate = createdDate;
+	private Date createdDate = new Date(System.currentTimeMillis());
+	
+	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
+	private Date updatedDate = createdDate;
 	
 }

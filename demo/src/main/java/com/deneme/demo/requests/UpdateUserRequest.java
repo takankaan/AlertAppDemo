@@ -9,13 +9,13 @@ import lombok.Data;
 @Data
 public class UpdateUserRequest {
 	
-	String name;
-	String surname;
-	String birthPlace;
-	String fatherName;
-	String motherName;
-	String phone;
-	Date birthDate;
+	private String name;
+	private String surname;
+	private String birthPlace;
+	private String fatherName;
+	private String motherName;
+	private String phone;
+	private Date birthDate;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	Date updatedDate = new Date(System.currentTimeMillis());

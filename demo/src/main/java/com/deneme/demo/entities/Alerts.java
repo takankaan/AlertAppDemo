@@ -18,22 +18,22 @@ public class Alerts {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 	
-	Long userId;
+	private Long userId;
 	
-	Long stockId;
+	private Long stockId;
 	
-	BigDecimal alertPrice;
-	
-	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
-	Date createdDate = new Date(System.currentTimeMillis());
+	private BigDecimal alertPrice;
 	
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
-	Date updatedDate = createdDate; 
+	private Date createdDate = new Date(System.currentTimeMillis());
 	
-	boolean alertDirection;
-	boolean deleted = false;
+	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
+	private Date updatedDate = createdDate; 
+	
+	private boolean alertDirection;
+	private boolean deleted = false;
 	
 	
 }

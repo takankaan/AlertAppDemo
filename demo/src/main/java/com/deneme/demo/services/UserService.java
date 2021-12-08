@@ -39,12 +39,18 @@ public class UserService {
 	}
 	
 	public User getOneUser(Long userId) {
-		return userRepository.findById(userId).orElse(null);
+		if(userId !=null)
+			return userRepository.findById(userId).orElse(null);
+		else return null;
 	}
 	
 	public void deleteUser(Long userId) {
-		if(userId != null && userRepository.findById(userId) != null)
-		userRepository.deleteById(userId);
+		if(userId != null)
+			if(!userRepository.findById(userId).isEmpty())
+			{
+				userRepository.deleteById(userId);
+				System.out.println(userId + " User successfully removed!");
+			}
 	}
 	
 	
@@ -57,8 +63,7 @@ public class UserService {
 			{
 				user.get().setDeleted(deleteRequest.isDeleted());
 				user.get().setUpdatedDate(deleteRequest.getUpdatedDate());
-				User updatedUser = userRepository.save(user.get());
-				return updatedUser;
+				return userRepository.save(user.get());
 			}
 			else 
 				return null;
@@ -69,10 +74,16 @@ public class UserService {
 	
 	public User loginUser(LoginRequest loginRequest) {
 		User user = userRepository.findByTcNo(loginRequest.getTcNo());
-		if(user != null)
+		if(user != null && loginRequest.getHashPassword() != null)
 		{
-			if(user.getHashPassword().equals(PasswordHashing.hashPassword(loginRequest.getHashPassword())));
-				return user;
+			if(!user.isDeleted())
+			{
+				if(user.getHashPassword().equals(PasswordHashing.hashPassword(loginRequest.getHashPassword())))
+					return user;
+				else
+					return null;
+			}
+			return null;
 		}
 		return null;
 	}
@@ -90,6 +101,7 @@ public class UserService {
 				user.get().setFatherName(updateUser.getFatherName());
 				user.get().setMotherName(updateUser.getMotherName());
 				user.get().setPhone(updateUser.getPhone());
+				user.get().setBirthDate(updateUser.getBirthDate());
 				user.get().setUpdatedDate(updateUser.getUpdatedDate());
 				return userRepository.save(user.get());
 			}

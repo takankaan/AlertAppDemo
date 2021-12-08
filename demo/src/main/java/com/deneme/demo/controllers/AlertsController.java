@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deneme.demo.entities.Alerts;
 import com.deneme.demo.requests.SoftDeleteRequest;
+import com.deneme.demo.requests.UpdateAlertRequest;
 import com.deneme.demo.services.AlertsService;
 
 @RestController
-@RequestMapping("/alerts")
+@RequestMapping("{userId}/alerts")
 public class AlertsController {
 	
 	private AlertsService alertsService;
@@ -28,13 +29,13 @@ public class AlertsController {
 	}
 	
 	@GetMapping
-	public List<Alerts> getAllAlerts(@RequestParam Optional<Long> userId,@RequestParam Optional<Long> stockId){
+	public List<Alerts> getAllAlerts(@PathVariable Long userId,@RequestParam Optional<Long> stockId){
 		return alertsService.getAllAlerts(userId,stockId);
 	}
 	
 	@GetMapping("/{alertId}")
-	public Alerts getOneAlert(@PathVariable Long alertId) {
-		return alertsService.getOneAlert(alertId);
+	public Alerts getOneAlert(@PathVariable Long userId, @PathVariable Long alertId) {
+		return alertsService.getOneAlert(userId,alertId);
 	}
 	
 	@PostMapping
@@ -42,13 +43,18 @@ public class AlertsController {
 		return alertsService.saveOneAlert(newAlert);
 	}
 	
-	@DeleteMapping("/{alertId}")
-	public void deleteOneAlert(@PathVariable Long alertId) {
-		alertsService.deleteAlert(alertId);
-	}
 	@PutMapping("/{alertId}")
-	public Alerts softDeleteUser(@PathVariable Long alertId,@RequestBody SoftDeleteRequest deleteRequest) {
-		return alertsService.softDeleteAlert(alertId, deleteRequest);
+	public Alerts updateAlert(@PathVariable Long userId,@PathVariable Long alertId,@RequestBody UpdateAlertRequest updateAlertRequest) {
+		return alertsService.updateAlert(userId,alertId, updateAlertRequest);
+	}
+	
+	@DeleteMapping("/{alertId}/delete")
+	public void deleteOneAlert(@PathVariable Long userId,@PathVariable Long alertId) {
+		alertsService.deleteAlert(userId, alertId);
+	}
+	@PutMapping("/{alertId}/delete")
+	public Alerts softDeleteAlert(@PathVariable Long userId,@PathVariable Long alertId,@RequestBody SoftDeleteRequest deleteRequest) {
+		return alertsService.softDeleteAlert(userId, alertId, deleteRequest);
 	}
 
 }

@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class UpdatePasswordRequest {
 	
-	String oldPassword;
-	String newPassword;
+	private String oldPassword;
+	private String newPassword;
 	
 	Date updatedDate = new Date(System.currentTimeMillis());
 

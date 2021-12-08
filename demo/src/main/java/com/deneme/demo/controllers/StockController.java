@@ -18,7 +18,7 @@ import com.deneme.demo.services.StockService;
 
 
 @RestController
-@RequestMapping("/market")
+@RequestMapping("/stocks")
 public class StockController {
 	
 	private StockService stockService;
@@ -28,8 +28,8 @@ public class StockController {
 	}
 	
 	@GetMapping
-	public List<StockModel> updateAndGetAllStocks(){
-		return stockService.updateAndGetAllStocks();
+	public List<StockModel> getAllStocks(){
+		return stockService.getAllStocks();
 	}
 	
 	@GetMapping("/{ticker}")

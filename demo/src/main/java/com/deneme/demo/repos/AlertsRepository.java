@@ -9,10 +9,12 @@ import com.deneme.demo.entities.Alerts;
 
 public interface AlertsRepository extends JpaRepository<Alerts, Long> {
 
-	List<Alerts> findAllByUserId(Optional<Long> userId);
+	List<Alerts> findAllByUserId(Long userId);
 
-	List<Alerts> findByUserIdAndStockId(Optional<Long> userId, Optional<Long> stockId);
-
-	List<Alerts> findAllByStockId(Long id);
+	List<Alerts> findAllByStockId(Long stockId);
+	
+	Alerts findByUserIdAndId(Long userId,Long id);
+	
+	List<Alerts> findByUserIdAndStockId(Long userId, Optional<Long> stockId);
 
 }

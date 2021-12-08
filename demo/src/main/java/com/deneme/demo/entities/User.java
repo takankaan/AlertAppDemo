@@ -18,28 +18,28 @@ import lombok.Data;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	Long tcNo;
+	private Long id;
+	private Long tcNo;
 	
-	String name;
-	String surname;
-	String birthPlace;
-	String fatherName;
-	String motherName;
-	String phone;
-	String hashPassword;
+	private String name;
+	private String surname;
+	private String birthPlace;
+	private String fatherName;
+	private String motherName;
+	private String phone;
+	private String hashPassword;
 	
 	@Temporal (TemporalType.DATE)
 	@JsonFormat(pattern="yyyy-MM-dd")
-	Date birthDate;
+	private Date birthDate;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	Date createdDate = new Date(System.currentTimeMillis());
+	private Date createdDate = new Date(System.currentTimeMillis());
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	Date updatedDate = createdDate;
+	private Date updatedDate = createdDate;
 	
-	boolean deleted = false;
+	private boolean deleted = false;
 
 
 	
