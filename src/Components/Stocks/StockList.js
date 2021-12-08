@@ -47,8 +47,8 @@ export default function StockList() {
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Stock Name / Symbol</th>
-                            <th>Current Price</th>
+                            <th> Stock Name / Symbol </th>
+                            <th> Current Price </th>
                             <th> Updated Date </th>
                             <th> See details </th>
                         </tr>
@@ -63,7 +63,6 @@ export default function StockList() {
                                     <td> {stock.currentValue} </td>
                                     <td> {stock.updatedDate} </td>
                                     <td>
-                              
                                         <Button onClick = {() => navigateDetailsPage(stock.id) } color = "primary">
                                             Details
                                     </Button>

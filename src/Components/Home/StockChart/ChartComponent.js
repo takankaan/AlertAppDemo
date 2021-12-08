@@ -12,7 +12,6 @@ export default function ChartComponent(props) {
         const id = props.stockId
         console.log(id)
         //axios get stock
-
     }
 
     return (
