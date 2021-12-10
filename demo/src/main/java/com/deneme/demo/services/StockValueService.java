@@ -1,10 +1,10 @@
 package com.deneme.demo.services;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,17 +24,27 @@ public class StockValueService {
 	private StockValues stockValues = new StockValues();
 	private Calendar calendar;
 	private Stock yahooStock;
-	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+	private Interval interval;
 	@Autowired
 	private StockRepository stockRepository;
 	
 	
-	public StockValues getOneStock(String ticker) {
+	public StockValues getOneStock(String ticker, Optional<String> dataMode) {
+		calendar = Calendar.getInstance();
+		if(dataMode.isPresent()) {
+			switch(dataMode.get()) {
+			case "month": calendar.add(Calendar.DATE, -30); interval = Interval.DAILY;break;
+			case "3months": calendar.add(Calendar.DATE, -90);interval = Interval.WEEKLY;break;
+			case "year": calendar.add(Calendar.DAY_OF_YEAR, -365);interval = Interval.MONTHLY; break;
+			}
+		}
+		else {
+			calendar.add(Calendar.DATE, -7); 
+			interval = Interval.DAILY;
+		}
 		try {
-			calendar = Calendar.getInstance();
 			yahooStock = YahooFinance.get(ticker);
-			calendar.add(Calendar.DAY_OF_MONTH, -7);
-			List<HistoricalQuote> array = yahooStock.getHistory(calendar,Interval.DAILY);
+			List<HistoricalQuote> array = yahooStock.getHistory(calendar,interval);
 			stockValues.setName(yahooStock.getName());
 			stockValues.setChangePercent(yahooStock.getQuote().getChangeInPercent());
 			stockValues.setCurrentPrice(yahooStock.getQuote().getPrice());

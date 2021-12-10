@@ -37,6 +37,7 @@ public class AlertsService {
 		}
 		return ((notDeletedAlerts.size() == 0) ? null: notDeletedAlerts); 
 	}
+	//Urldeki id ile alertteki id karşılaştır
 	public Alerts saveOneAlert( Alerts newAlert) {
 		if(newAlert !=null)
 			return alertsRepository.save(newAlert);
@@ -99,20 +100,28 @@ public class AlertsService {
 	
 	public void alertChecker(List<StockIdAndPrice> stockPriceList) {
 		for(StockIdAndPrice stock : stockPriceList) {
-			sendMessage(alertsRepository.findAllByStockId(stock.getStockId()),stock.getCurrentPrice());
+			sendMessage(alertsRepository.findAllByStockIdAndDeletedFalse(stock.getStockId()),stock.getCurrentPrice());
 		}
 	}
-	public static void sendMessage(List<Alerts> alertsList,BigDecimal stockCurrentPrice) {
+	public void sendMessage(List<Alerts> alertsList,BigDecimal stockCurrentPrice) {
 		for(Alerts alert : alertsList)
 		{
 			if(alert.isAlertDirection()) {
 				if(stockCurrentPrice.compareTo(alert.getAlertPrice())>=0)
-					System.out.println("MESAJ GÖNDERİLDİ");
+				{
+					System.out.println(alert.getStockId()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
+					alert.setDeleted(true);
+					alertsRepository.save(alert);
+				}
 			}
 			else
 			{
 				if(stockCurrentPrice.compareTo(alert.getAlertPrice())<=0)
-					System.out.println("MESAJ GÖNDERİLDİ");
+				{
+					System.out.println(alert.getStockId()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
+					alert.setDeleted(true);
+					alertsRepository.save(alert);
+				}
 			}
 		}
 	}
