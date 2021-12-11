@@ -1,19 +1,21 @@
 
 import React, { Component, useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Container, ListGroup, ListGroupItem, Row, Table } from 'reactstrap'
+import { Button, Col, Container, ListGroup, ListGroupItem, Row, Table } from 'reactstrap'
 import axios from 'axios';
 
 //loading icon
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 
 export default function StockList() {
 
-    const [stockList, setStockList] = useState([{}])
+    const [stockList, setStockList] = useState([])
     const navigate = useNavigate() //to stock chart 
-    
+
 
 
     useEffect(() => {
@@ -24,33 +26,34 @@ export default function StockList() {
 
     const getData = async () => {
         const url = "/market"
-        console.log(stockList[0].id)
+        //console.log(stockList[0].id)
 
         await axios.get(url)
             .then(response => {
                 setStockList(response.data)
+                console.log(stockList)
+                console.log(response.data)
             })
     }
 
-    
-   
 
-    const navigateDetailsPage = (id) => {
-        navigate("/home/details/" + id)
+
+
+    const navigateDetailsPage = (symbol) => {
+        navigate("/home/details/" + symbol)
     }
 
 
     return (
-        stockList[0].id != null
+        stockList.length > 0
             ?
             <div>
-                <Table >
+                <Table className='container' >
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th> Stock Name / Symbol </th>
                             <th> Current Price </th>
-                            <th> Updated Date </th>
+                            <th> Change Percent </th>
                             <th> See details </th>
                         </tr>
                     </thead>
@@ -58,13 +61,28 @@ export default function StockList() {
                         {
                             stockList.map(stock => (
 
-                                <tr key={stock.id}  >
-                                    <th> {stock.id} </th>
+                                <tr key={stock.stockSymbol}  >
                                     <td> {stock.stockName} / {stock.stockSymbol} </td>
-                                    <td> {stock.currentValue} </td>
-                                    <td> {stock.updatedDate} </td>
+                                    <td> {stock.currentPrice} </td>
                                     <td>
-                                        <Button onClick = {() => navigateDetailsPage(stock.id) } color = "primary">
+                                        {stock.changePercent < 0 
+                                        ? 
+                                        <div className='container'>
+                                            <ArrowDropDownIcon color='error' fontSize='large' />
+                                            {stock.changePercent}
+                                        </div> 
+                                        :
+                                        <div className='container'>
+                                            <ArrowDropUpIcon color="success" fontSize='large'/>
+                                            {stock.changePercent}
+                                        </div>
+
+
+                                        }
+
+                                    </td>
+                                    <td>
+                                        <Button onClick={() => navigateDetailsPage(stock.stockSymbol)} color="primary">
                                             Details
                                         </Button>
                                     </td>
@@ -74,7 +92,7 @@ export default function StockList() {
                         }
                     </tbody>
                 </Table >
-               
+
             </div>
 
             :

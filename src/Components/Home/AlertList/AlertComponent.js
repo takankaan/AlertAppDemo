@@ -33,13 +33,15 @@ export default function AlertComponent() {
         getData()
     }, [])
 
+    const user = localStorage.getItem("currentUser")
+    const userId = JSON.parse(user).id
  
 
 
     const getData = () => {
-        const user = localStorage.getItem("currentUser")
-        const userId = JSON.parse(user).id
-        const dataURL = "/alerts?userId=" + userId
+        
+        //const dataURL = "/alerts?userId=" + userId
+        const dataURL = "/" + userId + "/alerts"
         axios.get(dataURL)
             .then(response => {
                 //response is an alertList
@@ -53,7 +55,7 @@ export default function AlertComponent() {
     const removeItem = () => {
         //delete alert
         //alert(openForm.id + " numaralı eleman silinecek.")
-        const url = "/alerts/" + openForm.id;
+        const url = "/" + userId + "/alerts/" + openForm.id + "/delete";
         var removeAlert = { deleted: true }
 
         axios.put(url, removeAlert)
@@ -115,8 +117,7 @@ export default function AlertComponent() {
                                         <Grid item xs={8} onClick={() => handleClickOpen(singleAlert)}>
                                             <DeleteForeverSharpIcon color="error" />
                                         </Grid>
-                                        <Dialog
-                                            open={openForm.openState}
+                                        <Dialog                                            open={openForm.openState}
                                             onClose={() => handleClose(singleAlert.id)}
                                             aria-labelledby="alert-dialog-title"
                                             aria-describedby="alert-dialog-description">

@@ -29,7 +29,7 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="alert/:alertId" element={<AlertDetails/>} />
             <Route path="createAlert" element={<CreateAlert/>} />
-            <Route path="details/:stockId" element={<DisplayDetails/>} />
+            <Route path="details/:symbol" element={<DisplayDetails/>} />
             
             <Route path="*" element={<NotFound />} />
         </Route>

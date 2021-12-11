@@ -5,7 +5,7 @@ import CreateAlert from '../../Home/AlertList/CreateAlert/CreateAlert';
 import ChartComponent from '../../Home/StockChart/ChartComponent'
 
 export default function DisplayDetails() {
-    const stockId = useParams().stockId
+    const stockSymbol = useParams().symbol
     const [userId, setUserId] = useState()
     const [createAlertState, setCreateAlertState] = useState(false)
 
@@ -17,13 +17,11 @@ export default function DisplayDetails() {
         const u = localStorage.getItem("currentUser")
         const userData = JSON.parse(u)
         setUserId(userData.id)
-      
+        
         
         //console.log(userData)
     }
 
-
-  
 
 
     const data = [
@@ -53,14 +51,14 @@ export default function DisplayDetails() {
 
     return (
         <div>
-            {stockId} id numaralı stok verisine ait bilgiler
+            {stockSymbol} verisine ait bilgiler
             <Table>
                 <Row>
                     <Col>
                         <ChartComponent data={data} />
                     </Col>
                     <Col>
-                       {createAlertState && <CreateAlert userId = {userId}  stockId = {stockId}  /> }
+                       {createAlertState && <CreateAlert userId = {userId}  stockId = {stockSymbol}  /> }
                     </Col>
                 </Row>
             </Table>
