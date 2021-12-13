@@ -31,6 +31,10 @@ public class StockController {
 	public List<StockModel> getAllStocks(){
 		return stockService.getAllStocks();
 	}
+	@PostMapping
+	public List<StockModel> saveStocksToDatabase(){
+		return stockService.saveStocksToDatabase();
+	}
 	
 	@GetMapping("/{ticker}")
 	public StockModel getOneStock(@PathVariable String ticker) {

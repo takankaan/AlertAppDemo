@@ -1,7 +1,6 @@
 package com.deneme.demo.services;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +10,7 @@ import com.deneme.demo.entities.Alerts;
 import com.deneme.demo.repos.AlertsRepository;
 import com.deneme.demo.requests.SoftDeleteRequest;
 import com.deneme.demo.requests.UpdateAlertRequest;
-import com.deneme.demo.response.StockIdAndPrice;
+import com.deneme.demo.response.StockSymbolAndPrice;
 
 @Service
 public class AlertsService {
@@ -21,26 +20,20 @@ public class AlertsService {
 	public AlertsService(AlertsRepository alertsRepository) {
 		this.alertsRepository = alertsRepository;
 	}
-	public List<Alerts> getAllAlerts(Long userId,Optional<Long> stockId){
-		List<Alerts> notDeletedAlerts = new ArrayList<Alerts>();
-		if(userId != null && stockId.isPresent())
-		{
-			for(Alerts alert : alertsRepository.findByUserIdAndStockId(userId,stockId))
-				if(!alert.isDeleted())
-					notDeletedAlerts.add(alert);
-		}
+	public List<Alerts> getAllAlerts(Long userId,Optional<String> stockSymbol){
+		if(userId != null && stockSymbol.isPresent())
+			return alertsRepository.findByUserIdAndStockSymbolAndDeletedFalse(userId,stockSymbol);
 		else if(userId != null)
-		{
-			for(Alerts alert : alertsRepository.findAllByUserId(userId))
-				if(!alert.isDeleted())
-					notDeletedAlerts.add(alert);
-		}
-		return ((notDeletedAlerts.size() == 0) ? null: notDeletedAlerts); 
+			return alertsRepository.findAllByUserIdAndDeletedFalse(userId);
+		return null; 
 	}
 	//Urldeki id ile alertteki id karşılaştır
 	public Alerts saveOneAlert( Alerts newAlert) {
 		if(newAlert !=null)
-			return alertsRepository.save(newAlert);
+			if(newAlert.getAlertPrice() != null && newAlert.getStockSymbol() !=null && newAlert.getUserId() != null)
+				return alertsRepository.save(newAlert);
+			else
+				return null;
 		else
 			return null;
 	}
@@ -98,9 +91,9 @@ public class AlertsService {
 			return null;
 	}
 	
-	public void alertChecker(List<StockIdAndPrice> stockPriceList) {
-		for(StockIdAndPrice stock : stockPriceList) {
-			sendMessage(alertsRepository.findAllByStockIdAndDeletedFalse(stock.getStockId()),stock.getCurrentPrice());
+	public void alertChecker(List<StockSymbolAndPrice> stockPriceList) {
+		for(StockSymbolAndPrice stock : stockPriceList) {
+			sendMessage(alertsRepository.findAllByStockSymbolAndDeletedFalse(stock.getStockSymbol()),stock.getCurrentPrice());
 		}
 	}
 	public void sendMessage(List<Alerts> alertsList,BigDecimal stockCurrentPrice) {
@@ -109,7 +102,7 @@ public class AlertsService {
 			if(alert.isAlertDirection()) {
 				if(stockCurrentPrice.compareTo(alert.getAlertPrice())>=0)
 				{
-					System.out.println(alert.getStockId()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
+					System.out.println(alert.getStockSymbol()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
 					alert.setDeleted(true);
 					alertsRepository.save(alert);
 				}
@@ -118,7 +111,7 @@ public class AlertsService {
 			{
 				if(stockCurrentPrice.compareTo(alert.getAlertPrice())<=0)
 				{
-					System.out.println(alert.getStockId()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
+					System.out.println(alert.getStockSymbol()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
 					alert.setDeleted(true);
 					alertsRepository.save(alert);
 				}

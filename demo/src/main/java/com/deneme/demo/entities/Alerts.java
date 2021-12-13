@@ -22,7 +22,7 @@ public class Alerts {
 	
 	private Long userId;
 	
-	private Long stockId;
+	private String stockSymbol;
 	
 	private BigDecimal alertPrice;
 	

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.deneme.demo.entities.StockModel;
 import com.deneme.demo.repos.StockRepository;
-import com.deneme.demo.response.StockIdAndPrice;
+import com.deneme.demo.response.StockSymbolAndPrice;
 
 
 import yahoofinance.YahooFinance;
@@ -23,22 +23,22 @@ public class UpdateStocksValues{
 	AlertsService alertsService;
 	@Autowired
 	StockRepository stockRepository;
-	private StockIdAndPrice stockIdAndPrice;
-	private List<StockIdAndPrice> stockIdAndPriceList = new ArrayList<StockIdAndPrice>();
+	private StockSymbolAndPrice stockSymbolAndPrice;
+	private List<StockSymbolAndPrice> stockSymbolAndPriceList = new ArrayList<StockSymbolAndPrice>();
 	
 	@Scheduled(fixedRate = 15000L)
 	public void updateStocks() {
 			try{
-				stockIdAndPriceList.clear();
+				stockSymbolAndPriceList.clear();
 				for(StockModel stockModel: stockRepository.findByDeletedFalse())
 				{
 					String ticker = stockModel.getStockSymbol();
-					stockIdAndPrice = new StockIdAndPrice();
-					stockIdAndPrice.setCurrentPrice(YahooFinance.get(ticker).getQuote().getPrice());
-					stockIdAndPrice.setStockId(stockModel.getId());
-					stockIdAndPriceList.add(stockIdAndPrice);
+					stockSymbolAndPrice = new StockSymbolAndPrice();
+					stockSymbolAndPrice.setCurrentPrice(YahooFinance.get(ticker).getQuote().getPrice());
+					stockSymbolAndPrice.setStockSymbol(stockModel.getStockSymbol());
+					stockSymbolAndPriceList.add(stockSymbolAndPrice);
 				}
-				alertsService.alertChecker(stockIdAndPriceList);
+				alertsService.alertChecker(stockSymbolAndPriceList);
 			}
 			catch(IOException e){
 				System.out.println(e);

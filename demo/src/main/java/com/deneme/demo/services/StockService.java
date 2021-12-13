@@ -1,6 +1,8 @@
 package com.deneme.demo.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -62,9 +64,7 @@ public class StockService {
 					Stock stock = YahooFinance.get(ticker);
 					if(stock != null) 
 					{
-						stockModel.setStockName(stock.getName());
 						stockModel.setStockSymbol(stock.getSymbol());
-						stockModel.setCurrentValue(stock.getQuote().getPrice());
 						return stockRepository.save(stockModel);
 					}
 				} 
@@ -74,6 +74,14 @@ public class StockService {
 			}
 		}
 		return null;
+	}
+	public List<StockModel> saveStocksToDatabase(){
+		List<String> stockList = Arrays.asList("FENER.IS","GSRAY.IS","BJKAS.IS","TSPOR.IS","THYAO.IS","ASELS.IS","SKBNK.IS","VESTL.IS","SISE.IS","PETKM.IS","PGSUS.IS","TUPRS.IS","ARCLK.IS",
+				"TTKOM.IS","OTKAR.IS","ULKER.IS","DOAS.IS","BANVT.IS","MGROS.IS","ECILC.IS","TKNSA.IS","TCELL.IS","KCHOL.IS","FRIGO.IS","TUKAS.IS","YATAS.IS","ENJSA.IS","CCOLA.IS","IHLAS.IS","AYGAZ.IS");
+		List<StockModel> stockModelList = new ArrayList<StockModel>();
+		for(String modelTicker : stockList)
+			stockModelList.add(saveOneStock(modelTicker));
+		return stockModelList;
 	}
 	
 	/*public List<StockModel> updateAndGetAllStocks(){

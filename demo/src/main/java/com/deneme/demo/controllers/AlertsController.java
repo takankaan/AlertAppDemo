@@ -30,8 +30,8 @@ public class AlertsController {
 	}
 	
 	@GetMapping
-	public List<Alerts> getAllAlerts(@PathVariable Long userId,@RequestParam Optional<Long> stockId){
-		return alertsService.getAllAlerts(userId,stockId);
+	public List<Alerts> getAllAlerts(@PathVariable Long userId,@RequestParam Optional<String> stockSymbol){
+		return alertsService.getAllAlerts(userId,stockSymbol);
 	}
 	
 	@GetMapping("/{alertId}")

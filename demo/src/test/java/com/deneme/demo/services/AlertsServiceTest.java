@@ -37,7 +37,7 @@ public class AlertsServiceTest {
 	
 	@BeforeAll
 	public void setup() {
-		alert.setStockId(1L);
+		alert.setStockSymbol("DNME");
 		alert.setUserId(1L);
 		alert.setId(1L);
 		alertsList.add(alert);
@@ -51,15 +51,15 @@ public class AlertsServiceTest {
 	}
 	@Test
 	public void getAllAlertsWithUserParamTest() {
-		when(alertsRepository.findAllByUserId(alert.getUserId())).thenReturn(alertsList);
+		when(alertsRepository.findAllByUserIdAndDeletedFalse(alert.getUserId())).thenReturn(alertsList);
 		assertEquals(1, alertsService.getAllAlerts(alert.getId(), Optional.empty()).size());
-		verify(alertsRepository, times(1)).findAllByUserId(alert.getId());
+		verify(alertsRepository, times(1)).findAllByUserIdAndDeletedFalse(alert.getId());
 	}
 	@Test
 	public void getAllAlertsWithUserAndStockParamTest() {
-		when(alertsRepository.findByUserIdAndStockId(alert.getUserId(), Optional.of(alert.getStockId()))).thenReturn(alertsList);
-		assertEquals(1,alertsService.getAllAlerts(alert.getUserId(), Optional.of(alert.getStockId())).size());
-		verify(alertsRepository, times(1)).findByUserIdAndStockId(alert.getUserId(), Optional.of(alert.getStockId()));
+		when(alertsRepository.findByUserIdAndStockSymbolAndDeletedFalse(alert.getUserId(), Optional.of(alert.getStockSymbol()))).thenReturn(alertsList);
+		assertEquals(1,alertsService.getAllAlerts(alert.getUserId(), Optional.of(alert.getStockSymbol())).size());
+		verify(alertsRepository, times(1)).findByUserIdAndStockSymbolAndDeletedFalse(alert.getUserId(), Optional.of(alert.getStockSymbol()));
 	}
 	@Test
 	public void saveOneAlertNullValue() {

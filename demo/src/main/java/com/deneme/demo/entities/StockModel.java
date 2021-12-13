@@ -1,6 +1,5 @@
 package com.deneme.demo.entities;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -20,9 +19,7 @@ public class StockModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String stockName;
 	private String stockSymbol;
-	private BigDecimal currentValue;
 	private boolean deleted = false;
 	
 	@JsonFormat(pattern="yyyy/MM/dd HH:mm:ss")
