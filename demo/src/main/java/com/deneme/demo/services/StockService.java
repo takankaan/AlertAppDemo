@@ -91,30 +91,5 @@ public class StockService {
 		return stockModelList;
 	}
 	
-	/*public List<StockModel> updateAndGetAllStocks(){
-		List<String> stockList = Arrays.asList("FENER.IS","GSRAY.IS","BJKAS.IS","TSPOR.IS","THYAO.IS","ASELS.IS","SKBNK.IS","VESTL.IS","SISE.IS","PETKM.IS","PGSUS.IS","TUPRS.IS","ARCLK.IS",
-				"TTKOM.IS","OTKAR.IS","ULKER.IS","DOAS.IS","BANVT.IS","MGROS.IS","ECILC.IS","TKNSA.IS","TCELL.IS","KCHOL.IS","FRIGO.IS","TUKAS.IS","YATAS.IS","ENJSA.IS","CCOLA.IS","IHLAS.IS","AYGAZ.IS");
-		Date updatedDate = new Date(System.currentTimeMillis());
-		List<StockModel> notDeletedStocks = new ArrayList<StockModel>();
-		
-		for(String stockString : stockList) {
-			try {
-				if(stockRepository.existsByStockSymbol(stockString))
-				{
-					StockModel model = stockRepository.findByStockSymbol(stockString);
-					if(!model.isDeleted())
-					{
-						model.setCurrentValue(YahooFinance.get(model.getStockSymbol()).getQuote().getPrice());
-						model.setUpdatedDate(updatedDate);
-						notDeletedStocks.add(model);
-					}
-				}
-				else
-					saveOneStock(stockString);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return (notDeletedStocks.size() == 0) ? null: notDeletedStocks ;
-	}*/
+	
 }
