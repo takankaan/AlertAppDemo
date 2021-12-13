@@ -43,13 +43,24 @@ public class StockValueService {
 			interval = Interval.DAILY;
 		}
 		try {
+			
 			yahooStock = YahooFinance.get(ticker);
-			List<HistoricalQuote> array = yahooStock.getHistory(calendar,interval);
-			stockValues.setName(yahooStock.getName());
-			stockValues.setChangePercent(yahooStock.getQuote().getChangeInPercent());
-			stockValues.setCurrentPrice(yahooStock.getQuote().getPrice());
-			stockValues.setSymbol(yahooStock.getSymbol());
-			stockValues.setStockHistoryList(array);
+			if(yahooStock != null)
+			{
+				if(stockRepository.findByStockSymbol(ticker) != null)
+				{
+					List<HistoricalQuote> array = yahooStock.getHistory(calendar,interval);
+					stockValues.setName(yahooStock.getName());
+					stockValues.setChangePercent(yahooStock.getQuote().getChangeInPercent());
+					stockValues.setCurrentPrice(yahooStock.getQuote().getPrice());
+					stockValues.setSymbol(yahooStock.getSymbol());
+					stockValues.setStockHistoryList(array);
+				}
+				else
+					return null;
+			}
+			else
+				return null;
 		}catch(IOException e) {
 			System.out.println(e);
 		}

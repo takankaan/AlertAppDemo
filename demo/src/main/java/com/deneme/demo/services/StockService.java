@@ -59,11 +59,11 @@ public class StockService {
 		{
 			if(stockRepository.findByStockSymbol(ticker) == null ) 
 			{
-				StockModel stockModel = new StockModel();
 				try {
 					Stock stock = YahooFinance.get(ticker);
 					if(stock != null) 
 					{
+						StockModel stockModel = new StockModel();
 						stockModel.setStockSymbol(stock.getSymbol());
 						return stockRepository.save(stockModel);
 					}
@@ -80,7 +80,14 @@ public class StockService {
 				"TTKOM.IS","OTKAR.IS","ULKER.IS","DOAS.IS","BANVT.IS","MGROS.IS","ECILC.IS","TKNSA.IS","TCELL.IS","KCHOL.IS","FRIGO.IS","TUKAS.IS","YATAS.IS","ENJSA.IS","CCOLA.IS","IHLAS.IS","AYGAZ.IS");
 		List<StockModel> stockModelList = new ArrayList<StockModel>();
 		for(String modelTicker : stockList)
-			stockModelList.add(saveOneStock(modelTicker));
+		{
+			try {
+				if(YahooFinance.get(modelTicker) != null)
+				stockModelList.add(saveOneStock(modelTicker));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return stockModelList;
 	}
 	
