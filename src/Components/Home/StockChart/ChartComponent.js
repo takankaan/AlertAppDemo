@@ -7,23 +7,18 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Label, ReferenceLine } fr
 
 
 export default function ChartComponent(props) {
-
-    const getData = () => {
-        const id = props.stockId
-        console.log(id)
-        //axios get stock
-    }
+    console.log(props.alertLevel)
+   
 
     return (
-
         <div>
             <LineChart width={800} height={300} data={props.data}>
                 {props.alertLevel &&
                     <ReferenceLine y={props.alertLevel} stroke="#ff0000" strokeDasharray="2 2" />
                 }
-                <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+                <Line type="monotone" dataKey="open" stroke="#8884d8" />
                 <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="date" />
                 <YAxis />
             </LineChart>
 

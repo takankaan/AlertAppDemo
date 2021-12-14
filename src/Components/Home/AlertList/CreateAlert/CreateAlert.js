@@ -10,7 +10,8 @@ export default function CreateAlert(props) {
     const [stockList, setStockList] = useState([{}])
     const [postAlert, setPostAlert] = useState({
         userId: props.userId,
-        stockId : +props.stockId,
+        //stockId : +props.stockId,
+        stockSymbol : props.stockSymbol,
         alertPrice : "",
         alertDirection : ""
     })
@@ -38,7 +39,7 @@ export default function CreateAlert(props) {
         event.preventDefault()
         console.log(postAlert)
         //console.log(postAlert)
-        const url = "/alerts"
+        const url = "/" + postAlert.userId + "/alerts"
         axios.post(url,postAlert)
         .then(response => {
             if(response.data != null) {

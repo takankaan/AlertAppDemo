@@ -93,7 +93,7 @@ export default function AlertComponent() {
                 <thead>
                     <tr>
                         <th> #Alert id</th>
-                        <th> Stock Id</th>
+                        <th> Stock Symbol </th>
                         <th> Alert Price </th>
                         <th> Created Date</th>
                         <th> Updated Date</th>
@@ -107,7 +107,7 @@ export default function AlertComponent() {
 
                             <tr key={singleAlert.id}>
                                 <td > {singleAlert.id} </td>
-                                <td> {singleAlert.stockId} </td>
+                                <td> {singleAlert.stockSymbol} </td>
                                 <td> {singleAlert.alertPrice} </td>
                                 <td> {singleAlert.createdDate} </td>
                                 <td> {singleAlert.updatedDate} </td>
