@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deneme.demo.entities.Alerts;
@@ -14,6 +15,8 @@ import com.deneme.demo.response.StockSymbolAndPrice;
 
 @Service
 public class AlertsService {
+	@Autowired
+	MailService mailService;
 	
 	private AlertsRepository alertsRepository;
 
@@ -91,18 +94,19 @@ public class AlertsService {
 			return null;
 	}
 	
-	public void alertChecker(List<StockSymbolAndPrice> stockPriceList) {
+	public void stockControl(List<StockSymbolAndPrice> stockPriceList) {
 		for(StockSymbolAndPrice stock : stockPriceList) {
-			sendMessage(alertsRepository.findAllByStockSymbolAndDeletedFalse(stock.getStockSymbol()),stock.getCurrentPrice());
+			alertChecker(alertsRepository.findAllByStockSymbolAndDeletedFalse(stock.getStockSymbol()),stock.getCurrentPrice());
 		}
 	}
-	public void sendMessage(List<Alerts> alertsList,BigDecimal stockCurrentPrice) {
+	public void alertChecker(List<Alerts> alertsList,BigDecimal stockCurrentPrice) {
+		
 		for(Alerts alert : alertsList)
 		{
 			if(alert.isAlertDirection()) {
 				if(stockCurrentPrice.compareTo(alert.getAlertPrice())>=0)
 				{
-					System.out.println(alert.getStockSymbol()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
+					mailService.sendMail(alert);
 					alert.setDeleted(true);
 					alertsRepository.save(alert);
 				}
@@ -111,7 +115,7 @@ public class AlertsService {
 			{
 				if(stockCurrentPrice.compareTo(alert.getAlertPrice())<=0)
 				{
-					System.out.println(alert.getStockSymbol()+" ---- "+alert.getAlertPrice() +"MESAJ GÖNDERİLDİ");
+					mailService.sendMail(alert);
 					alert.setDeleted(true);
 					alertsRepository.save(alert);
 				}

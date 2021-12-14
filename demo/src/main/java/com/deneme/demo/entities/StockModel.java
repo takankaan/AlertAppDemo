@@ -19,6 +19,7 @@ public class StockModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	private String stockName;
 	private String stockSymbol;
 	private boolean deleted = false;
 	

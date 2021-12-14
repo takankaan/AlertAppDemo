@@ -64,6 +64,7 @@ public class StockService {
 					if(stock != null) 
 					{
 						StockModel stockModel = new StockModel();
+						stockModel.setStockName(stock.getName());
 						stockModel.setStockSymbol(stock.getSymbol());
 						return stockRepository.save(stockModel);
 					}

@@ -28,6 +28,7 @@ public class User {
 	private String motherName;
 	private String phone;
 	private String hashPassword;
+	private String mail;
 	
 	@Temporal (TemporalType.DATE)
 	@JsonFormat(pattern="yyyy-MM-dd")

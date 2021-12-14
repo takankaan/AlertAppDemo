@@ -38,7 +38,7 @@ public class UpdateStocksValues{
 					stockSymbolAndPrice.setStockSymbol(stockModel.getStockSymbol());
 					stockSymbolAndPriceList.add(stockSymbolAndPrice);
 				}
-				alertsService.alertChecker(stockSymbolAndPriceList);
+				alertsService.stockControl(stockSymbolAndPriceList);
 			}
 			catch(IOException e){
 				System.out.println(e);
