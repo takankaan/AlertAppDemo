@@ -8,8 +8,6 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Label, ReferenceLine } fr
 
 export default function ChartComponent(props) {
     console.log(props.alertLevel)
-   
-
     return (
         <div>
             <LineChart width={800} height={300} data={props.data}>
@@ -21,8 +19,6 @@ export default function ChartComponent(props) {
                 <XAxis dataKey="date" />
                 <YAxis />
             </LineChart>
-
-
         </div>
     )
 }

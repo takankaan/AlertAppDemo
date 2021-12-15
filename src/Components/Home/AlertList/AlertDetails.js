@@ -16,8 +16,6 @@ export default function AlertDetails() {
     const userId = JSON.parse(user).id
     const [dataMode, setDataMode] = useState("year")
 
-
-
     const [data, setData] = useState({
         id: "",
         userId: "",
@@ -43,10 +41,6 @@ export default function AlertDetails() {
         getHistoryData()
     }, [dataMode]) //data mode değişince history verilerini tekrar getir
 
-    
-
-
-
     const getData = () => {
         const url = "/" + userId + "/alerts/" + alertId
         axios.get(url)
@@ -55,7 +49,6 @@ export default function AlertDetails() {
             })
         console.log(data)
     }
-
 
     const getHistoryData = () => {
         const URL = "/market/" + data.stockSymbol + "?dataMode=" + dataMode;

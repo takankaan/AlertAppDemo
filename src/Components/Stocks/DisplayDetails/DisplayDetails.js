@@ -25,15 +25,17 @@ export default function DisplayDetails() {
     const [dropDownState, setDropDownState] = useState(false);
     const [historyData, setHistoryData] = useState([])
 
+    const u = localStorage.getItem("currentUser")
+    const userData = JSON.parse(u)
+    
+
 
     useEffect(() => {
+        setUserId(userData.id)
         getData()
     }, [dataMode])
 
     const getData = () => {
-        const u = localStorage.getItem("currentUser")
-        const userData = JSON.parse(u)
-        setUserId(userData.id)
         //console.log(userData)
         const url = "/market/" + stockSymbol + "?dataMode=" + dataMode;
         console.log(url)
@@ -47,8 +49,7 @@ export default function DisplayDetails() {
 
     }
 
-
-
+/*
     const dataa = [
         { name: 'Page A', uv: 150, pv: 600, amt: 2400 },
         { name: 'Page B', uv: 200, pv: 600, amt: 2400 },
@@ -66,13 +67,11 @@ export default function DisplayDetails() {
         { name: 'Page H', uv: 255, pv: 600, amt: 2400 },
         { name: 'Page K', uv: 335, pv: 600, amt: 2400 },
         { name: 'Page J', uv: 160, pv: 600, amt: 2400 }]; //will be send to displayDetails
-
-
+*/ 
 
     const newAlertPage = () => {
         setCreateAlertState(!createAlertState)
     }
-
 
     return (
         <div>
@@ -85,6 +84,7 @@ export default function DisplayDetails() {
                         <DropdownItem onClick={() => setDataMode("month")} >Aylık</DropdownItem>
                         <DropdownItem onClick={() => setDataMode("3months")}>3 Aylık</DropdownItem>
                         <DropdownItem onClick={() => setDataMode("year")}> Yıllık </DropdownItem>
+                        <DropdownItem onClick={() => setDataMode("week")}> Haftalık </DropdownItem>              
                     </DropdownMenu>
                 </Dropdown>
             </div>
