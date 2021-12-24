@@ -16,6 +16,11 @@ import com.project.alertapp.response.StockSymbolAndPrice;
 
 import yahoofinance.YahooFinance;
 
+/**
+ * This component updates stock prices every 15 seconds.
+ * @author KaanSarigul
+ *
+ */
 @Component
 public class UpdateStocksValues{
 	@Autowired

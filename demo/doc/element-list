@@ -1,0 +1,7 @@
+com.project.alertapp
+com.project.alertapp.controllers
+com.project.alertapp.entities
+com.project.alertapp.repos
+com.project.alertapp.requests
+com.project.alertapp.response
+com.project.alertapp.services

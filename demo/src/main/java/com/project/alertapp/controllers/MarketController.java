@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.alertapp.response.StockMarketView;
 import com.project.alertapp.response.StockValues;
 import com.project.alertapp.services.StockValueService;
-
+/**
+ * This class provides REST request for stock values.
+ * @author KaanSarigul
+ *
+ */
 @RestController
 @RequestMapping("/market")
 public class MarketController {

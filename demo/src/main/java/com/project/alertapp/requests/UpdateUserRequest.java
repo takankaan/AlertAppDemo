@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
+/**
+ * This entity designed for update user values. It contains name, surname, birth place, father name, mother name, phone, mail, birth date and updated date values.
+ * @author KaanSarigul
+ *
+ */
 @Data
 public class UpdateUserRequest {
 	

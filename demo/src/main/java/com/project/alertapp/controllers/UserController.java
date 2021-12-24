@@ -17,6 +17,12 @@ import com.project.alertapp.requests.UpdatePasswordRequest;
 import com.project.alertapp.requests.UpdateUserRequest;
 import com.project.alertapp.services.UserService;
 
+
+/**
+ * This class provides REST request for alerts.
+ * @author KaanSarigul
+ *
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {

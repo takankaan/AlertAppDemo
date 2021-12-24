@@ -151,7 +151,7 @@ public class UserService {
 	 * This method changes user password using by updateAlertRequest object.
 	 * @param userId Id of requested user.
 	 * @param updatePasswordRequest UpdatePasswordRequest object contains new user password.
-	 * @return
+	 * @return Returns updated user.
 	 */
 	public User updatePassword(Long userId, UpdatePasswordRequest updatePasswordRequest) {
 		Optional<User> user;
@@ -166,13 +166,10 @@ public class UserService {
 					user.get().setUpdatedDate(updatePasswordRequest.getUpdatedDate());
 					return userRepository.save(user.get());
 				}else
-					//Şifre Eşleşmiyor
 					return null;
 			}else
-				//Kullanıcı Bulunamadı
 				return null;
 		}else
-			//UserID boş
 			return null;
 	}
 			

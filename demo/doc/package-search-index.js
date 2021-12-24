@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.project.alertapp.entities"},{"l":"com.project.alertapp.repos"},{"l":"com.project.alertapp.requests"},{"l":"com.project.alertapp.response"}];updateSearchResults();

@@ -13,6 +13,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
+/**
+ * This entity contains properties for stocks and initialize automatically id, createdDate, updatedDate and deleted properties.
+ * @author KaanSarigul
+ *
+ */
 @Entity
 @Data
 public class User {

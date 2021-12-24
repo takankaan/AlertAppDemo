@@ -56,7 +56,7 @@ public class StockService {
 	 * This method changes deleted property of the stock. It means soft delete a stock. 
 	 * @param ticker Ticker uses as stock symbol which retrieve stock data from yahooFinance.
 	 * @param deleteRequest It contains deleted property which will change stock's deleted property.
-	 * @return
+	 * @return Returns updated stock.
 	 */
 	public StockModel softDeleteStock(String ticker, SoftDeleteRequest deleteRequest) {
 		if(ticker != null && deleteRequest !=null)

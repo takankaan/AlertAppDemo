@@ -3,6 +3,11 @@ package com.project.alertapp.services;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This class provides hashing passwords.
+ * @author KaanSarigul
+ *
+ */
 public class PasswordHashing {
 	/**
 	 * This method takes the user password and makes it unreadable. 
